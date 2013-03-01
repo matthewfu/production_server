@@ -4,12 +4,12 @@
 [submodule "nginx"]
 	path = nginx
 	url = git://github.com/git-mirror/nginx.git
-[submodule "rvm"]
-	path = rvm
-	url = git://github.com/wayneeseguin/rvm.git
 [submodule "inits/nginx"]
 	path = inits/nginx
 	url = git://github.com/JasonGiedymin/nginx-init-ubuntu.git
 [submodule "varnish"]
 	path = varnish
 	url = git://github.com/varnish/Varnish-Cache.git
+[submodule "plugins/nginx-gridfs.git"]
+	path = plugins/nginx-gridfs.git
+	url = https://github.com/mdirolf/nginx-gridfs.git
