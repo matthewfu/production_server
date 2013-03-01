@@ -43,9 +43,9 @@ if %x[uname].split("\n").first == 'Linux'
   `git submodule update`
   cd "#{$script_root}/nginx"
   `apt-get install libcurl4-openssl-dev`
-  `./auto/configure --add-module=#{$script_root}/plugins/nginx-gridfs.git --add-module=#{$gem_home}/gems/passenger-3.0.19/ext/nginx --prefix=#{$user_home}/nginx`
+  `./auto/configure --add-module=#{$script_root}/plugins/nginx-gridfs.git --add-module=#{$gem_home}/gems/passenger-3.0.19/ext/nginx --prefix=#{$user_home}/nginx --with-cc-opt=-Wno-error`
   `make`
-  `sudo make install`
+  `make install`
   `sudo cp #{$script_root}/inits/nginx/nginx /etc/init.d/`
   `sudo cp #{$script_root}/confs/nginx/nginx.conf #{$user_home}/nginx/conf/`
     puts 'Please edit nginc conf for detial'
