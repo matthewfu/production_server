@@ -37,10 +37,17 @@ if %x[uname].split("\n").first == 'Linux'
 
 #nginx
   `gem install passenger`
+  cd "#{$script_root}/plugins/nginx-gridfs.git"
+  `git checkout v0.8`
+  `git submodule init`
+  `git submodule update`
   cd "#{$script_root}/nginx"
+  `apt-get install libcurl4-openssl-dev`
   `./auto/configure --add-module=#{$script_root}/plugins/nginx-gridfs.git --add-module=#{$gem_home}/gems/passenger-3.0.19/ext/nginx --prefix=#{$user_home}/nginx`
+  `make`
+  `sudo make install`
   `sudo cp #{$script_root}/inits/nginx/nginx /etc/init.d/`
-  `sudo cp #{$script_root}/conf/nginx/nginx.conf #{$user_home}/nginx/conf/`
+  `sudo cp #{$script_root}/confs/nginx/nginx.conf #{$user_home}/nginx/conf/`
     puts 'Please edit nginc conf for detial'
   `sudo update-rc.d nginx defaults`
 #varnish
