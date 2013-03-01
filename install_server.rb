@@ -7,8 +7,7 @@ if %x[uname].split("\n").first == 'Linux'
 #mongo
   cd "#{$script_root}/mongo/bin"  
   %x[sudo cp * /usr/sbin/]
-  %x[sudo mkdir /data/db/]
-  %x[sudo mkdir /data/db/]
+  %x[sudo mkdir -p /data/db/]
   cd "#{$script_root}"  
   %x[sudo cp inits/mongo/mongodb /etc/init.d/]
   %x[sudo cp confs/mongo/mongodb.conf /etc/]
@@ -21,6 +20,7 @@ if %x[uname].split("\n").first == 'Linux'
   %x[sudo cp src/redis-cli /usr/local/bin/]
   cd "#{$script_root}"  
   %x[sudo cp inits/redis/redis_6379 /etc/init.d/]
+  %x[sudo mkdir -p /etc/redis/]
   %x[sudo cp confs/redis/6379.conf /etc/redis/]
   %x[sudo update-rc.d redis_6379 defaults]
 #pcre

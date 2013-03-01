@@ -14,4 +14,5 @@
 - git submodule init
 - git submodule update
 - ruby install_server.rb
+- sudo reboot
 - sudo gem install therubyracer
