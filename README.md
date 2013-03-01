@@ -7,4 +7,6 @@
 - echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
 - source ~/.rvm/scripts/rvm
 - rvm --default use 1.9.3
+- git submodules init
+- git submodules update
 - ruby install_server.rb
