@@ -11,8 +11,6 @@
 - echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
 - source ~/.rvm/scripts/rvm
 - rvm --default use 1.9.3
-- git submodule init
-- git submodule update
 - ruby install_server.rb
 - sudo reboot
 - sudo gem install therubyracer
