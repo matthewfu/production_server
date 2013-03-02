@@ -4,9 +4,6 @@
 [submodule "nginx"]
 	path = nginx
 	url = git://github.com/git-mirror/nginx.git
-[submodule "inits/nginx"]
-	path = inits/nginx
-	url = git://github.com/JasonGiedymin/nginx-init-ubuntu.git
 [submodule "varnish"]
 	path = varnish
 	url = git://github.com/varnish/Varnish-Cache.git

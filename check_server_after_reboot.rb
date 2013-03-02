@@ -1,10 +1,10 @@
 require 'fileutils'
 include FileUtils
 
-def check_ps(cmd,has_string_reg,set_count=1)
-  find_count = set_count + 1
+def check_ps(cmd,has_string_reg,find_count=1)
   `#{cmd}`.split("\n").each do |item|
-    find_count -=1 if(item =~ has_string_reg > 0 )
+    puts item
+    find_count = find_count - 1 if(item.match(has_string_reg) and !item.match(/grep/) )
   end
   find_count == 0 ? true : false
 end
@@ -40,15 +40,15 @@ end
 
 #mongodb
   if $test_object[:mongodb] or $test_object[:all]
-    puts  "Redis........#{check_ps("ps -aux | grep mongod",/mongod/) ? "OK" : "Failed"}"
+    puts  "Mongodb........#{check_ps("ps -aux | grep mongod",/mongod/) ? "OK" : "Failed"}"
   end
 
 #varnish
-  if $test_object[:nginx] or $test_object[:all]
+  if $test_object[:varnish] or $test_object[:all]
     puts "Varish........TODO"
   end
 
 #god
-  if $test_object[:nginx] or $test_object[:all]
-    puts "Varish........GOD"
+  if $test_object[:god] or $test_object[:all]
+    puts "god........TODO"
   end

@@ -49,7 +49,7 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/sbin/mongod
 DATA=/data/db
-NAME=mongodb
+NAME=mongodb-arbiter
 DESC=database
 
 if test ! -x $DAEMON; then
