@@ -69,7 +69,7 @@ if %x[uname].split("\n").first == 'Linux'
   `git submodule init`
   `git submodule update`
   cd "#{$script_root}/nginx"
-  `apt-get install libcurl4-openssl-dev`
+  `sudo apt-get install libcurl4-openssl-dev`
   `./auto/configure --add-module=#{$script_root}/plugins/nginx-gridfs.git --add-module=#{$gem_home}/gems/passenger-3.0.19/ext/nginx --prefix=#{$user_home}/nginx --with-cc-opt=-Wno-error`
   `make`
   `make install`
@@ -80,11 +80,11 @@ if %x[uname].split("\n").first == 'Linux'
   `sudo update-rc.d nginx defaults`
     puts 'Please edit /etc/init.d/nginx set conf file to #{$user_home}/nginx/conf/nginx.conf'
 #varnish
-
+  `sudo apt-get install varnish`
 
 #mysql
   if install_musql.upcase == "Y"
-  `apt-get install libmysqld-dev`
+  `sudo apt-get install libmysqld-dev`
   `gem install mysql2 -v '0.3.11'`    
   end
   
@@ -92,6 +92,13 @@ if %x[uname].split("\n").first == 'Linux'
   if install_routine_job.upcase == "Y"
     cd "#{$script_root}/god_settings"
 
+  end
+
+  #$init project
+  if $caller_project_folder
+    cd $caller_project_folder
+    `bundle install`
+    `rake assets:precompile`
   end
 
 end # of linux
