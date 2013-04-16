@@ -17,6 +17,9 @@ ARGV.each_with_index do |argv,index|
   end
 end
 
+print "Enter project folder location...."
+project_loc = gets.chomp 
+
 print "Need Mysql for connecting LDAP?( Y/default No)......."
 install_musql = gets.chomp
 
