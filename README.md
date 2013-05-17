@@ -16,3 +16,22 @@
 - ruby install_server.rb
 - sudo reboot
 - sudo gem install therubyracer
+
+god_settings
+============
+
+#Run
+- gem install god
+- rvm wrapper ruby-version bootup god
+
+#Install
+- 1.Move this folder to /etc/god
+- 2.Link the *.god files to conf.d  
+- 3.Link init.d/god to /etc/init.d/god  ==>  sudo ln -s /etc/god/init.d/god  /etc/init.d/god 
+
+#Change
+- Edit init.d/god/  GOD_BIN to bootup_god path
+- Edit conf.d/*.god(resque setting)   rails_root to rails root's path, w.group to specific name if needed
+
+#Finish
+- sudo update-rc.d god defaults

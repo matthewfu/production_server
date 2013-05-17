@@ -7,9 +7,3 @@
 [submodule "varnish"]
 	path = varnish
 	url = git://github.com/varnish/Varnish-Cache.git
-[submodule "plugins/nginx-gridfs.git"]
-	path = plugins/nginx-gridfs.git
-	url = https://github.com/mdirolf/nginx-gridfs.git
-[submodule "god_settings"]
-	path = god_settings
-	url = https://github.com/matthewfu/god_settings.git
