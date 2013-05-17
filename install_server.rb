@@ -26,6 +26,8 @@ install_musql = gets.chomp
 print "Need God for delay and routine job?( Y/default No)......."
 install_routine_job = gets.chomp
 
+print "Nginx ipv6?( Y/default No)......."
+nginx_need_ipv6 = gets.chomp
 
 if %x[uname].split("\n").first == 'Linux'
 
@@ -67,13 +69,10 @@ if %x[uname].split("\n").first == 'Linux'
 
 #nginx
   `gem install passenger`
-  cd "#{$script_root}/plugins/nginx-gridfs.git"
-  `git checkout v0.8`
-  `git submodule init`
-  `git submodule update`
   cd "#{$script_root}/nginx"
+  version = %x[gem list passenger].scan(/\d.\d.\d/)
   `sudo apt-get install libcurl4-openssl-dev`
-  `./auto/configure --add-module=#{$script_root}/plugins/nginx-gridfs.git --add-module=#{$gem_home}/gems/passenger-3.0.19/ext/nginx --prefix=#{$user_home}/nginx --with-cc-opt=-Wno-error`
+  `./auto/configure  --add-module=#{$gem_home}/gems/passenger-#{version}/ext/nginx --prefix=#{$user_home}/nginx --with-cc-opt=-Wno-error`
   `make`
   `make install`
   `sudo cp #{$script_root}/inits/nginx/nginx /etc/init.d/`
