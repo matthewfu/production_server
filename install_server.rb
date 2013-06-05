@@ -29,6 +29,8 @@ install_musql = gets.chomp
 print "Need God for delay and routine job?( Y/default No)......."
 install_routine_job = gets.chomp
 
+print "Nginx ipv6?( Y/default No)......."
+nginx_need_ipv6 = gets.chomp
 
 if %x[uname].split("\n").first == 'Linux'
 

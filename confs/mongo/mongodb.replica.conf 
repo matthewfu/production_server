@@ -83,5 +83,6 @@ logappend=true
 #source = slave.example.com
 
 # in replica set configuration, specify the name of the replica set
+replSet = replset_server
 
 rest = true

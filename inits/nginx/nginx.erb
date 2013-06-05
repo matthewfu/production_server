@@ -32,7 +32,7 @@ set -e
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-  ulimit  -n 65536
+        ulimit  -n 65536
         start-stop-daemon --start --quiet --pidfile\
                  $PID_FILE  --exec $DAEMON -- $DAEMON_OPTS
         echo "$NAME."
