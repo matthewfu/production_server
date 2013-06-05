@@ -1,5 +1,7 @@
 require 'fileutils'
 include FileUtils
+# require 'pry'
+require 'erb'
 
 $script_root = pwd()
 $gem_home = ENV["GEM_HOME"]
@@ -16,6 +18,10 @@ ARGV.each_with_index do |argv,index|
     $caller_script_root = ARGV[index + 1]
   end
 end
+
+print "Enter project folder location....(Default: #{user_home}/orbit)"
+project_loc = gets.chomp 
+project_loc = "#{user_home}/orbit" if project_loc.blank?
 
 print "Need Mysql for connecting LDAP?( Y/default No)......."
 install_musql = gets.chomp
@@ -40,7 +46,7 @@ if %x[uname].split("\n").first == 'Linux'
   `sudo chmod +x /etc/init.d/mongodb`
   `sudo cp confs/mongo/mongodb.conf /etc/`
   `sudo update-rc.d mongodb defaults`
-
+  `sudo touch /var/log/mongodb`
 #redis
   cd "#{$script_root}/redis"
   `make`
@@ -62,25 +68,28 @@ if %x[uname].split("\n").first == 'Linux'
   `sudo make install`
   `sudo ldconfig`
 
-#nginx
+#puts "#nginx"
   `gem install passenger`
-  cd "#{$script_root}/plugins/nginx-gridfs.git"
-  `git checkout v0.8`
-  `git submodule init`
-  `git submodule update`
   cd "#{$script_root}/nginx"
+  passenger_version = %x[gem list passenger].scan(/\d.\d.\d/).first
+  nginx_root = "#{$user_home}/nginx"
   `sudo apt-get install libcurl4-openssl-dev`
-  `./auto/configure --add-module=#{$script_root}/plugins/nginx-gridfs.git --add-module=#{$gem_home}/gems/passenger-3.0.19/ext/nginx --prefix=#{$user_home}/nginx --with-cc-opt=-Wno-error`
+  `./auto/configure  --add-module=#{$gem_home}/gems/passenger-#{passenger_version}/ext/nginx --prefix="#{nginx_root}" --with-cc-opt=-Wno-error`
   `make`
   `make install`
-  `sudo cp #{$script_root}/inits/nginx/nginx /etc/init.d/`
-  `sudo chmod +x /etc/init.d/nginx`
-  `sudo cp #{$script_root}/confs/nginx/nginx.conf #{$user_home}/nginx/conf/`
-    puts 'Please edit nginx conf for detial'
+  worker_processes = 16
+  nginx_conf = ERB.new(File.new("#{$script_root}/confs/nginx/nginx.conf.erb").read)
+  File.open("#{nginx_root}/conf/nginx.conf", 'w') { |file| file.write(nginx_conf.result) }
+ 
+  nginx_init = ERB.new(File.new("#{$script_root}/inits/nginx/nginx.erb").read)
+  File.open("#{$script_root}/tmp/nginx_init", 'w') { |file| file.write(nginx_init.result) } #need sudo
+
+  `sudo cp #{$script_root}/tmp/nginx_init /etc/init.d/nginx` 
+  `sudo chmod +x /etc/init.d/nginx` 
   `sudo update-rc.d nginx defaults`
-    puts 'Please edit /etc/init.d/nginx set conf file to #{$user_home}/nginx/conf/nginx.conf'
+
 #varnish
-  `sudo apt-get install varnish`
+  # `sudo apt-get install varnish`
 
 #mysql
   if install_musql.upcase == "Y"
@@ -90,13 +99,22 @@ if %x[uname].split("\n").first == 'Linux'
   
  #iroutine_job
   if install_routine_job.upcase == "Y"
-    cd "#{$script_root}/god_settings"
+    `gem install god`
+    `rvm wrapper #{ENV["RUBY_VERSION"]} bootup god`
+    `sudo mkdir -p /etc/god`
 
+    `cd #{project_loc}/config`
+    `ls`.split("\n").each |file| do
+      if file.match(/.god$/)
+        `ln -s  #{$project_folder}/config/#{file} /etc/god/#{file}`
+      end
+       `sudo ln -s #{$script_root}/init.d/god  /etc/init.d/god `
+    end
   end
 
   #$init project
-  if $caller_project_folder
-    cd $caller_project_folder
+  if project_loc
+    cd project_loc
     `bundle install`
     `rake assets:precompile`
   end
