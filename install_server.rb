@@ -84,7 +84,7 @@ if %x[uname].split("\n").first == 'Linux'
   File.open("#{nginx_root}/conf/nginx.conf", 'w') { |file| file.write(nginx_conf.result) }
  
   nginx_init = ERB.new(File.new("#{$script_root}/inits/nginx/nginx.erb").read)
-  `touch #{$script_root}/tmp`
+  `mkdir -p  #{$script_root}/tmp`
   File.open("#{$script_root}/tmp/nginx_init", 'w') { |file| file.write(nginx_init.result) } #need sudo
 
   `sudo cp #{$script_root}/tmp/nginx_init /etc/init.d/nginx` 
