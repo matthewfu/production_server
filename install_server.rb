@@ -19,9 +19,9 @@ ARGV.each_with_index do |argv,index|
   end
 end
 
-print "Enter project folder location....(Default: #{user_home}/orbit)"
+print "Enter project folder location....(Default: #{$user_home}/orbit)"
 project_loc = gets.chomp 
-project_loc = "#{user_home}/orbit" if project_loc.blank?
+project_loc = "#{$user_home}/orbit" if project_loc.empty?
 
 print "Need Mysql for connecting LDAP?( Y/default No)......."
 install_musql = gets.chomp
@@ -84,6 +84,7 @@ if %x[uname].split("\n").first == 'Linux'
   File.open("#{nginx_root}/conf/nginx.conf", 'w') { |file| file.write(nginx_conf.result) }
  
   nginx_init = ERB.new(File.new("#{$script_root}/inits/nginx/nginx.erb").read)
+  `touch #{$script_root}/tmp`
   File.open("#{$script_root}/tmp/nginx_init", 'w') { |file| file.write(nginx_init.result) } #need sudo
 
   `sudo cp #{$script_root}/tmp/nginx_init /etc/init.d/nginx` 
@@ -106,7 +107,7 @@ if %x[uname].split("\n").first == 'Linux'
     `sudo mkdir -p /etc/god`
 
     `cd #{project_loc}/config`
-    `ls`.split("\n").each |file| do
+    `ls`.split("\n").each do |file| 
       if file.match(/.god$/)
         `ln -s  #{$project_folder}/config/#{file} /etc/god/#{file}`
       end
