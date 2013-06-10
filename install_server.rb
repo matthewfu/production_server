@@ -34,6 +34,8 @@ nginx_need_ipv6 = gets.chomp
 
 if %x[uname].split("\n").first == 'Linux'
 
+`rvm gemset use global`
+
 #init submodule
   cd "#{$script_root}"
   `git submodule init`
@@ -114,6 +116,8 @@ if %x[uname].split("\n").first == 'Linux'
        `sudo ln -s #{$script_root}/init.d/god  /etc/init.d/god `
     end
   end
+
+  `gem update debugger`
 
   #$init project
   if project_loc
