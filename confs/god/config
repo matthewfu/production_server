@@ -2,3 +2,4 @@
 # Share configs apply to all instances.
 God.load "/etc/god/conf.d/*.god"
 #TODO Should change to project folder
+

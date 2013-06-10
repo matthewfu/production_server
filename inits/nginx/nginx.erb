@@ -12,7 +12,7 @@
 
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-NGINX_ROOT = /home/user/nginx
+NGINX_ROOT = <%= nginx_root %>
 DAEMON= $NGINX_ROOT/sbin/nginx
 LOGS_PATH= $NGINX_ROOT/logs/
 
@@ -32,7 +32,7 @@ set -e
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-	ulimit  -n 65536
+        ulimit  -n 65536
         start-stop-daemon --start --quiet --pidfile\
                  $PID_FILE  --exec $DAEMON -- $DAEMON_OPTS
         echo "$NAME."

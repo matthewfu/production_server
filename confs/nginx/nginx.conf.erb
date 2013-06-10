@@ -1,0 +1,42 @@
+user  root;
+worker_processes  <%= worker_processes || 16 %>;
+
+error_log  logs/error.log  notice;
+
+events {
+  worker_connections  10000;
+  use epoll;
+}
+
+http {
+  passenger_max_requests 100000;
+  passenger_max_pool_size 20;
+  passenger_min_instances 10;
+  client_max_body_size 50m;
+  passenger_root <%= "#{ENV['GEM_HOME']}/gems/#{`gem list passenger`.gsub(/\(|\)/,'').gsub(" ",'-')}" %>;
+  passenger_ruby <%= ENV["rvm_path"] %>/wrappers/<%=ENV["RUBY_VERSION"]%>@global/ruby;
+  include       mime.types;
+  default_type  application/octet-stream;
+
+  sendfile        on;
+  keepalive_timeout  20;
+  gzip  on;
+
+  server {
+    listen 80;
+    server_name localhost;
+    root <%= project_loc %>/public;   # <--- be sure to point to 'public'!
+    passenger_enabled on;
+    rails_env production;
+
+    location /static/ {
+      root <%= project_loc  %>/public;
+    }
+
+    location ~ ^/(assets)/  {
+      root <%= project_loc %>/public;
+      expires max;
+      add_header Cache-Control public;
+    }
+  }
+}
