@@ -70,9 +70,9 @@ if %x[uname].split("\n").first == 'Linux'
 #nginx
   `gem install passenger`
   cd "#{$script_root}/nginx"
-  version = %x[gem list passenger].scan(/\d.\d.\d/)
+  version = %x[gem list passenger].scan(/\d.\d.\d/).first
   `sudo apt-get install libcurl4-openssl-dev`
-  `./auto/configure  --add-module=#{$gem_home}/gems/passenger-#{version}/ext/nginx --prefix=#{$user_home}/nginx --with-cc-opt=-Wno-error`
+  `./configure  --add-module=#{$gem_home}/gems/passenger-#{version}/ext/nginx --prefix=#{$user_home}/nginx --with-cc-opt=-Wno-error`
   `make`
   `make install`
   `sudo cp #{$script_root}/inits/nginx/nginx /etc/init.d/`

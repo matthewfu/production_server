@@ -4,6 +4,3 @@
 [submodule "nginx"]
 	path = nginx
 	url = git://github.com/git-mirror/nginx.git
-[submodule "varnish"]
-	path = varnish
-	url = git://github.com/varnish/Varnish-Cache.git
