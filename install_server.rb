@@ -73,7 +73,7 @@ if %x[uname].split("\n").first == 'Linux'
   `sudo ldconfig`
 
 #puts "#nginx"
-  `gem install passenger`
+  `gem install passenger -v 4.0.3`
   cd "#{$script_root}/nginx"
   passenger_version = %x[gem list passenger].scan(/\d.\d.\d/).first
   nginx_root = "#{$user_home}/nginx"
@@ -117,11 +117,10 @@ if %x[uname].split("\n").first == 'Linux'
     end
   end
 
-  `gem update debugger`
-
   #$init project
   if project_loc
     cd project_loc
+    `gem update debugger`
     `bundle install`
     `rake assets:precompile`
   end
