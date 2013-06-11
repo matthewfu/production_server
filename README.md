@@ -13,9 +13,12 @@
 - echo "source $HOME/.rvm/scripts/rvm" >> ~/.bash_profile
 - source ~/.rvm/scripts/rvm
 - rvm --default use 1.9.3
+- git clone [Your project]
+- git clone https://github.com/matthewfu/production_server.git
+- cd production_server
 - ruby install_server.rb
 - sudo reboot
-- sudo gem install therubyracer
+- gem install therubyracer
 
 god_settings
 ============
@@ -35,3 +38,6 @@ god_settings
 
 #Finish
 - sudo update-rc.d god defaults
+
+
+git config --global url."https://".insteadOf git://

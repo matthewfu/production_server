@@ -21,7 +21,7 @@ end
 
 print "Enter project folder location....(Default: #{$user_home}/orbit)"
 project_loc = gets.chomp 
-project_loc = "#{$user_home}/orbit" if project_loc.blank?
+project_loc = "#{$user_home}/orbit" if project_loc.empty?
 
 print "Need Mysql for connecting LDAP?( Y/default No)......."
 install_musql = gets.chomp
@@ -33,6 +33,8 @@ print "Nginx ipv6?( Y/default No)......."
 nginx_need_ipv6 = gets.chomp
 
 if %x[uname].split("\n").first == 'Linux'
+
+`rvm gemset use global`
 
 #init submodule
   cd "#{$script_root}"
@@ -84,7 +86,7 @@ if %x[uname].split("\n").first == 'Linux'
   File.open("#{nginx_root}/conf/nginx.conf", 'w') { |file| file.write(nginx_conf.result) }
  
   nginx_init = ERB.new(File.new("#{$script_root}/inits/nginx/nginx.erb").read)
-  `mkdir -p #{$script_root}/tmp`
+  `mkdir -p  #{$script_root}/tmp`
   File.open("#{$script_root}/tmp/nginx_init", 'w') { |file| file.write(nginx_init.result) } #need sudo
 
   `sudo cp #{$script_root}/tmp/nginx_init /etc/init.d/nginx` 
@@ -106,18 +108,16 @@ if %x[uname].split("\n").first == 'Linux'
     `rvm wrapper #{ENV["RUBY_VERSION"]} bootup god`
     `sudo mkdir -p /etc/god`
 
-    cd "#{project_loc}/config"
+    `cd #{project_loc}/config`
     `ls`.split("\n").each do |file| 
       if file.match(/.god$/)
-        `sudo ln -s  #{$project_folder}/config/#{file} /etc/god/#{file}`
+        `ln -s  #{$project_folder}/config/#{file} /etc/god/#{file}`
       end
-        god_init = ERB.new(File.new("#{$script_root}/inits/god/god.erb").read)
-        `mkdir -p #{$script_root}/tmp` 
-        File.open("#{$script_root}/tmp/god_init", 'w') { |file| file.write(god_init.result) } #need sudo
-
-        `sudo cp #{$script_root}/tmp/god_init /etc/init.d/god` 
+       `sudo ln -s #{$script_root}/init.d/god  /etc/init.d/god `
     end
   end
+
+  `gem update debugger`
 
   #$init project
   if project_loc
