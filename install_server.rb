@@ -87,7 +87,7 @@ if %x[uname].split("\n").first == 'Linux'
  
   nginx_init = ERB.new(File.new("#{$script_root}/inits/nginx/nginx.erb").read)
   `mkdir -p  #{$script_root}/tmp`
-  File.open("#{$script_root}/tmp/nginx_init", 'w') { |file| file.write(nginx_init.result) } #need sudo
+  File.open("#{$script_root}/tmp/nginx_init", 'w') { |file| file.write(nginx_init.result) } 
 
   `sudo cp #{$script_root}/tmp/nginx_init /etc/init.d/nginx` 
   `sudo chmod +x /etc/init.d/nginx` 
@@ -107,14 +107,21 @@ if %x[uname].split("\n").first == 'Linux'
     `gem install god`
     `rvm wrapper #{ENV["RUBY_VERSION"]} bootup god`
     `sudo mkdir -p /etc/god`
-
-    `cd #{project_loc}/config`
-    `ls`.split("\n").each do |file| 
+    cd "#{project_loc}/config"
+    `ls`.split("\n").each do |file|
       if file.match(/.god$/)
-        `ln -s  #{$project_folder}/config/#{file} /etc/god/#{file}`
+        `sudo ln -s  #{project_loc}/config/#{file} /etc/god/#{file}`
       end
-       `sudo ln -s #{$script_root}/init.d/god  /etc/init.d/god `
-    end
+    end   
+    god_init = ERB.new(File.new("#{$script_root}/inits/god/god.erb").read)
+    File.open("#{$script_root}/tmp/god_init", 'w') { |file| file.write(god_init.result) } 
+
+    `sudo cp #{$script_root}/tmp/god_init /etc/init.d/god` 
+    `sudo chmod +x /etc/init.d/god` 
+    `sudo update-rc.d god defaults`
+
+    `sudo mkdir -p /var/log/resque`
+
   end
 
   #$init project
