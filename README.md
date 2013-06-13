@@ -18,5 +18,10 @@
 - ruby install_server.rb
 - sudo reboot
 
+- rvm gemset use global
+- bundle install
+- gem install therubyracer
+- gem update debugger
+- bundle install
 
 git config --global url."https://".insteadOf git://
