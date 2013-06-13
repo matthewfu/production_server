@@ -102,17 +102,22 @@ if %x[uname].split("\n").first == 'Linux'
   `gem install mysql2 -v '0.3.11'`    
   end
   
- #iroutine_job
+ #routine_job
   if install_routine_job.upcase == "Y"
     `gem install god`
     `rvm wrapper #{ENV["RUBY_VERSION"]} bootup god`
     `sudo mkdir -p /etc/god`
-    cd "#{project_loc}/config"
-    `ls`.split("\n").each do |file|
-      if file.match(/.god$/)
-        `sudo ln -s  #{project_loc}/config/#{file} /etc/god/#{file}`
-      end
-    end   
+    # cd "#{project_loc}/config"
+    # `ls`.split("\n").each do |file|
+    #   if file.match(/.god$/)
+    #     `sudo ln -s  #{project_loc}/config/#{file} /etc/god/#{file}`
+    #   end
+    # end   
+
+    god_conf = ERB.new(File.new("#{$script_root}/confs/god/config.erb").read)
+    File.open("#{$script_root}/tmp/god_conf", 'w') { |file| file.write(god_conf.result) } 
+    `sudo cp #{$script_root}/tmp/god_conf /etc/god/config` 
+
     god_init = ERB.new(File.new("#{$script_root}/inits/god/god.erb").read)
     File.open("#{$script_root}/tmp/god_init", 'w') { |file| file.write(god_init.result) } 
 
