@@ -132,9 +132,10 @@ if %x[uname].split("\n").first == 'Linux'
   #$init project
   if project_loc
     cd project_loc
+    `gem install therubyracer`
     `gem update debugger`
     `bundle install`
-    `rake assets:precompile`
+    # `rake assets:precompile`
   end
 
 end # of linux
