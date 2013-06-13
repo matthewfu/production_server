@@ -51,6 +51,7 @@ if %x[uname].split("\n").first == 'Linux'
   `sudo cp confs/mongo/mongodb.conf /etc/`
   `sudo update-rc.d mongodb defaults`
   `sudo touch /var/log/mongodb`
+  `sudo /etc/init.d/mongodb start`
 #redis
   cd "#{$script_root}/redis"
   `make`
@@ -93,6 +94,17 @@ if %x[uname].split("\n").first == 'Linux'
   `sudo chmod +x /etc/init.d/nginx` 
   `sudo update-rc.d nginx defaults`
 
+
+  #$init project
+  cd project_loc
+  `rvm gemset use global`
+  `bundle install`
+  `gem install therubyracer`
+  `gem update debugger`
+  `bundle install`
+  # `rake assets:precompile`
+
+
 #varnish
   # `sudo apt-get install varnish`
 
@@ -129,14 +141,6 @@ if %x[uname].split("\n").first == 'Linux'
 
   end
 
-  #$init project
-  if project_loc
-    cd project_loc
-    `gem install therubyracer`
-    `gem update debugger`
-    `bundle install`
-    # `rake assets:precompile`
-  end
 
 end # of linux
 
