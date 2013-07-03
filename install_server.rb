@@ -82,7 +82,11 @@ if %x[uname].split("\n").first == 'Linux'
   `./auto/configure  --add-module=#{$gem_home}/gems/passenger-#{passenger_version}/ext/nginx --prefix="#{nginx_root}" --with-cc-opt=-Wno-error`
   `make`
   `make install`
-  worker_processes = 16
+  print "Nginx worker(Depends on your CPU core and threads)......."
+  worker_processes = gets.chomp
+
+  # worker_processes = 16
+
   nginx_conf = ERB.new(File.new("#{$script_root}/confs/nginx/nginx.conf.erb").read)
   File.open("#{nginx_root}/conf/nginx.conf", 'w') { |file| file.write(nginx_conf.result) }
  
